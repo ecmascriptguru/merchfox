@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "wordfox",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "This extension makes it easy for amazon salers to check their products and keywords suggested by Amazon.",
+    "description": "The description of the application"
+  }
+}

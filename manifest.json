@@ -30,8 +30,8 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"http://*/*",
-				"https://*/*"
+				"*://www.amazon.com/*",
+				"*://www.amazon.ca/*"
 			],
 			"js": [
 				"assets/scripts/jquery.js",

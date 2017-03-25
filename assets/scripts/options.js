@@ -2,14 +2,17 @@
 
 var Options = (function() {
 	var _storage = window.DataStorage,
-		getSomething = function() {
-			return [];
+
+		init = function() {
+			$('#products-table').DataTable();
 		};
 
 	return {
-		get: getSomething()
+		init: init
 	};
 })();
+
 (function (window, jQuery) {
 	window.Options = Options;
+	window.Options.init();
 })(window, jQuery);

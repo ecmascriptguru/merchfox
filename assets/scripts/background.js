@@ -174,6 +174,12 @@ var WordFox = (function() {
 				}
 				break;
 
+			case "options":
+				if (request.message == "status") {
+					sendResponse({status: window.WordFox.status, data: window.WordFox.result});
+				}
+				break;
+
 			case "contentscript":
 				if (request.message == "status") {
 					if (window.WordFox.status._initTabId == sender.tab.id &&

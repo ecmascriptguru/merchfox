@@ -4,13 +4,15 @@
 	"manifest_version": 2,
 	"description": "__MSG_appDescription__",
 	"icons": {
-		"16": "images/icon-16.png",
-		"128": "images/icon-128.png"
+		"16": "assets/images/icon-16.png",
+		"128": "assets/images/icon-128.png"
 	},
 	"default_locale": "en",
 	"background": {
 		"scripts": [
-			"scripts/background.js"
+			"assets/scripts/jquery.js",
+			"assets/scripts/storage.js",
+			"assets/scripts/background.js"
 		]
 	},
 	"permissions": [
@@ -23,7 +25,7 @@
 		"notifications",
 		"storage"
 	],
-	"options_page": "options.html",
+	"options_page": "assets/html/options.html",
 	"content_scripts": [
 		{
 			"matches": [
@@ -31,8 +33,8 @@
 				"https://*/*"
 			],
 			"js": [
-				"scripts/jquery.js",
-				"scripts/contentscript.js"
+				"assets/scripts/jquery.js",
+				"assets/scripts/contentscript.js"
 			],
 			"run_at": "document_end",
 			"all_frames": false
@@ -40,13 +42,13 @@
 	],
 	"browser_action": {
 		"default_icon": {
-			"19": "images/icon-19.png",
-			"38": "images/icon-38.png"
+			"19": "assets/images/icon-19.png",
+			"38": "assets/images/icon-38.png"
 		},
 		"default_title": "wordfox",
-		"default_popup": "popup.html"
+		"default_popup": "assets/html/popup.html"
 	},
 	"web_accessible_resources": [
-		"images/icon-48.png"
+		"assets/images/icon-48.png"
 	]
 }

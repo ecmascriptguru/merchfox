@@ -42,14 +42,14 @@ var ContentScript = (function() {
 				$BSL = $("li#SalesRank ul.zg_hrsr span.zg_hrsr_rank");
 
 			var data = {
-				pageTitle: ($pageTitle || {}).text,
+				link: window.location.href,
 				title: (($title || {}).text() || "").trim(),
 				keywords: ($keyword[0] || []).content,
 				image: ($landingImage[0] || {}).src,
 				brand: ($brand.find("img")[0] || {}).src,
 				price: ($price || {}).text(),
-				BSL: ($BSL[0] || {}).textContent,
-				bsl: ($BSL[1] || {}).textContent
+				BSR: ($BSL[0] || {}).textContent,
+				bsr: ($BSL[1] || {}).textContent
 			};
 
 			chrome.extension.sendMessage({

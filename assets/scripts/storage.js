@@ -1,12 +1,16 @@
 'use strict';
 
 var DataStorage = (function() {
-	var _products = JSON.parse(localStorage.getItem("products") || "[]"),
+	var saveProducts = function(products) {
+			localStorage.setItem("_products", JSON.stringify(products));
+		},
+
 		getProducts = function() {
-			return _products;
+			return JSON.parse(localStorage.getItem("_products")) || [];
 		};
 
 	return {
+		saveProducts: saveProducts,
 		getProducts: getProducts
 	};
 })();

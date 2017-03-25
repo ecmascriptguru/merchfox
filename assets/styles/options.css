@@ -1,3 +1,10 @@
 body {
   padding: 20px;
 }
+
+table img.landing-img {
+	width: 120px;
+}
+table button.remove {
+	width: 100%;
+}

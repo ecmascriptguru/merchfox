@@ -1,7 +1,7 @@
 'use strict';
 
 var Popup = (function() {
-	var _temp = DataStorage.getProducts(),
+	var _storage = window.DataStorage,
 		_informTag = $("#no-data-inform"),
 		_startButton = $("#btn-start"),
 		_stopButton = $("#btn-stop"),
@@ -13,6 +13,19 @@ var Popup = (function() {
 			return [];
 		},
 		showStatusPage = function() {
+			$("#urls-count").text(_status._urlsCount);
+			if (!_status._initTabId) {
+				$("#urls").attr({class: "status alert-success"}).text("completed");
+			} else {
+				$("#urls").attr({class: "status alert-warning"}).text("pending");
+			}
+			$("#details-count").text(_status._detailsCount);
+			if (_status._detailTabIds.length == 0) {
+				$("#details").attr({class: "status alert-success"}).text("completed");
+			} else {
+				$("#details").attr({class: "status alert-warning"}).text("pending");
+			}
+
 			_startButton.prop('disabled', true);
 			_stopButton.prop('disabled', false);
 			_startPage.hide();

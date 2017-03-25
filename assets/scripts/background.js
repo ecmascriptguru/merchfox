@@ -9,13 +9,14 @@ chrome.runtime.onInstalled.addListener(function (details) {
 var WordFox = (function() {
 	var _storage = window.DataStorage,
 		_amazonStartPoint = "https://www.amazon.com/s/ref=amb_link_483004722_1?ie=UTF8&field-keywords=&bbn=12035955011&field-enc-merchantbin=ATVPDKIKX0DER&hidden-keywords=ORCA&rh=i%3Afashion-novelty",
+		_urls = [],
 		_status = {
 			_started: false,
 			_initTabId: null,
 			_initTabUrl: null,
 			_detailTabIds: [],
-			_urlsCount: 0,
-			_urls: []
+			_urlsCount: 1340,
+			_detailsCount: 240
 		},
 		startedHandler = function(tab) {
 			//
@@ -31,6 +32,9 @@ var WordFox = (function() {
 		stop = function() {
 			chrome.tabs.remove(_status._initTabId, function(param) {
 				console.log(param);
+				_status._started = false;
+				_status._initTabId = null;
+				_status._initTabUrl = null;
 				chrome.browserAction.setBadgeText({ text:'' });
 			});
 		},

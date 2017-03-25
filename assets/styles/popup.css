@@ -2,3 +2,9 @@ body {
 	width: 320px;
 	height: auto;
 }
+
+span.status {
+	padding: 1px;
+	float: right;
+	border-radius: 9px;
+}

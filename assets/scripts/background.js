@@ -24,7 +24,7 @@ var WordFox = (function() {
 
 		addUrls = function(params) {
 			_urls = _urls.concat(params.urls);
-			if (params.next_page_url || _urls.length < 10) {
+			if (params.next_page_url && _urls.length < 10) {
 				_status._initTabUrl = params.next_page_url;
 				_status._urlsCount++;
 			} else {
@@ -32,7 +32,7 @@ var WordFox = (function() {
 					startProductPages();
 				}
 				chrome.tabs.remove(_status._initTabId, function(res) {
-					console.log(param);
+					console.log(res);
 					_status._initTabId = null;
 					_status._initTabUrl = null;
 				});
@@ -46,7 +46,9 @@ var WordFox = (function() {
 			var nextPageUrl = _urls.pop();
 			if (nextPageUrl) {
 				_status._detailTabUrls[sender.tab.id] = nextPageUrl;
-				sendResponse({continue: true, next_url: nextPageUrl});
+				if (typeof callback == "function") {
+					callback({continue: true, next_url: nextPageUrl});
+				}
 			} else {
 				delete _status._detailTabUrls[sender.tab.id];
 				ind = _status._detailTabIds.indexOf(sender.tab.id);
@@ -54,6 +56,10 @@ var WordFox = (function() {
 				sendResponse({continue: false});
 				chrome.tabs.remove(sender.tab.id);
 			}
+		},
+
+		getResults = function() {
+			return _results;
 		},
 
 		initStatus = function() {
@@ -73,7 +79,7 @@ var WordFox = (function() {
 
 		startProductPages = function() {
 			_status._detailPageStarted = true;
-			for (var i = 0; i < Math.min(5, _urls.length); i++) {
+			for (var i = 0; i < 1/*Math.min(5, _urls.length)*/; i++) {
 				var curDetailPageUrl = _urls.pop();
 				createTab({url: curDetailPageUrl}, function(tab) {
 					_status._detailTabIds.push(tab.id);
@@ -82,28 +88,36 @@ var WordFox = (function() {
 			}
 		},
 
+		startedHandler = function(tab) {
+			console.log("Start url created. The tab info is ", tab.id);
+			_status._started = true;
+			_status._initTabId = tab.id;
+			_status._initTabUrl = tab.url;
+			chrome.browserAction.setBadgeText({ text: 'wait' });
+		},
 		start = function() {
-			initStatus();
-			chrome.tabs.create({url: _amazonStartPoint}, function(tab) {
-				console.log("Start url created. The tab info is ", tab.id);
-				_status._started = true;
-				_status._initTabId = tab.id;
-				_status._initTabUrl = tab.url;
-				chrome.browserAction.setBadgeText({ text: 'wait' });
-			});
+			// initStatus();
+			chrome.tabs.create({url: _amazonStartPoint}, startedHandler);
 		},
 
 		stop = function() {
-			chrome.tabs.remove(_status._initTabId, function(param) {
-				console.log(param);
+			if (_status._initTabId) {
+				chrome.tabs.remove(_status._initTabId, function(param) {
+					console.log(param);
+					_status._started = false;
+					_status._initTabId = null;
+					_status._initTabUrl = null;
+					_status._detailPageStarted = false;
+					chrome.browserAction.setBadgeText({ text:'' });
+				});
+			} else {
 				_status._started = false;
 				_status._initTabId = null;
 				_status._initTabUrl = null;
 				_status._detailPageStarted = false;
 				chrome.browserAction.setBadgeText({ text:'' });
-			});
+			}
 		},
-		
 		getUrls = function() {
 			return _urls;
 		};
@@ -114,7 +128,9 @@ var WordFox = (function() {
 		stop: stop,
 		addUrls: addUrls,
 		addData: addData,
-		urls: getUrls
+		urls: getUrls,
+		resuls: _results,
+		get: getResults
 	};
 })();
 
@@ -142,7 +158,7 @@ var WordFox = (function() {
 						window.WordFox.status._initTabUrl == sender.tab.url) {
 						sendResponse({valid: true, message: "search-page"});
 					} else if (window.WordFox.status._detailTabIds.indexOf(sender.tab.id) > -1 &&
-						window.WordFox._status[sender.tab.id] == sender.tab.url) {
+						window.WordFox.status._detailTabUrls[sender.tab.id] == sender.tab.url) {
 						sendResponse({valid: true, message: "product-page"});
 					} else {
 						sendResponse({valid: false});

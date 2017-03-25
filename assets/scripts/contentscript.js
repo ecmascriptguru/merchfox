@@ -43,8 +43,8 @@ var ContentScript = (function() {
 
 			var data = {
 				pageTitle: ($pageTitle || {}).text,
-				title: ($title || {}).text(),
-				keywords: ($keywords[0] || []).content,
+				title: (($title || {}).text() || "").trim(),
+				keywords: ($keyword[0] || []).content,
 				image: ($landingImage[0] || {}).src,
 				brand: ($brand.find("img")[0] || {}).src,
 				price: ($price || {}).text(),
@@ -57,7 +57,11 @@ var ContentScript = (function() {
 				message: "product-detail",
 				data: data
 			}, function(response) {
-				//
+				if (response.continue) {
+					window.location.href = response.next_url;
+				} else {
+					console.log("An odd response found");
+				}
 			});
 			console.log("This is product page.");
 		},
@@ -66,7 +70,6 @@ var ContentScript = (function() {
 			"search-page": scrapSearchPage,
 			"product-page": scrapProductPage
 		},
-		_status = {},
 
 		init = function() {
 			chrome.extension.sendMessage({

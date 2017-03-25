@@ -45,16 +45,30 @@ var WordFox = (function() {
 
 			var nextPageUrl = _urls.pop();
 			if (nextPageUrl) {
-				_status._detailTabUrls[sender.tab.id] = nextPageUrl;
 				if (typeof callback == "function") {
-					callback({continue: true, next_url: nextPageUrl});
+					callback({status: "done"});
+
+					chrome.tabs.update(sender.tab.id, {url: nextPageUrl}, function(tab) {
+						_status._detailTabUrls[tab.id] = tab.url;
+					});
 				}
 			} else {
 				delete _status._detailTabUrls[sender.tab.id];
-				ind = _status._detailTabIds.indexOf(sender.tab.id);
-				_status._detailTabIds = _status._detailTabIds.slice(0, ind - 1).concat(_status._detailTabIds.slice(ind + 1));
-				sendResponse({continue: false});
-				chrome.tabs.remove(sender.tab.id);
+				var ind = _status._detailTabIds.indexOf(sender.tab.id);
+				_status._detailTabIds = _status._detailTabIds.slice(0, ind).concat(_status._detailTabIds.slice(ind + 1));
+
+				if (typeof callback == "function") {
+					callback({continue: false});
+				}
+
+				if (sender.tab.id) {
+					chrome.tabs.remove(sender.tab.id, function() {
+						if (_status._detailTabIds.length == 0) {
+							_status._detailTabUrls = {};
+							stop();
+						}
+					});
+				}
 			}
 		},
 
@@ -79,7 +93,7 @@ var WordFox = (function() {
 
 		startProductPages = function() {
 			_status._detailPageStarted = true;
-			for (var i = 0; i < 1/*Math.min(5, _urls.length)*/; i++) {
+			for (var i = 0; i < Math.min(5, _urls.length); i++) {
 				var curDetailPageUrl = _urls.pop();
 				createTab({url: curDetailPageUrl}, function(tab) {
 					_status._detailTabIds.push(tab.id);
@@ -117,6 +131,14 @@ var WordFox = (function() {
 				_status._detailPageStarted = false;
 				chrome.browserAction.setBadgeText({ text:'' });
 			}
+
+			for (var i = 0; i < _status._detailTabIds.length; i++) {
+				if (_status._detailTabIds[i] != undefined && _status._detailTabIds[i] != null) {
+					chrome.tabs.remove(_status._detailTabIds[i]);
+				}
+			}
+
+			chrome.browserAction.setBadgeText({text: ""})
 		},
 		getUrls = function() {
 			return _urls;
@@ -143,10 +165,10 @@ var WordFox = (function() {
 				if (request.message == "start") {
 					//	Code to start scraping
 					window.WordFox.start();
-					sendResponse({status: true, message: "Scraping just started."});
+					sendResponse({status: window.WordFox.status, message: "Scraping just started."});
 				} else if (request.message == "stop") {
 					window.WordFox.stop();
-					sendResponse({status: true, message: "Scraping just stopped."});
+					sendResponse({status: window.WordFox.status, message: "Scraping just stopped."});
 				} else if (request.message == "status") {
 					sendResponse({status: window.WordFox.status});
 				}
@@ -157,8 +179,7 @@ var WordFox = (function() {
 					if (window.WordFox.status._initTabId == sender.tab.id &&
 						window.WordFox.status._initTabUrl == sender.tab.url) {
 						sendResponse({valid: true, message: "search-page"});
-					} else if (window.WordFox.status._detailTabIds.indexOf(sender.tab.id) > -1 &&
-						window.WordFox.status._detailTabUrls[sender.tab.id] == sender.tab.url) {
+					} else if (window.WordFox.status._detailTabIds.indexOf(sender.tab.id) > -1) {
 						sendResponse({valid: true, message: "product-page"});
 					} else {
 						sendResponse({valid: false});

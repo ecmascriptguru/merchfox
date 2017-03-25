@@ -57,11 +57,7 @@ var ContentScript = (function() {
 				message: "product-detail",
 				data: data
 			}, function(response) {
-				if (response.continue) {
-					window.location.href = response.next_url;
-				} else {
-					console.log("An odd response found");
-				}
+				console.log(response);
 			});
 			console.log("This is product page.");
 		},

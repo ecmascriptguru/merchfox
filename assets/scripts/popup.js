@@ -31,17 +31,26 @@ var Popup = (function() {
 			_startPage.hide();
 			_statusPage.show();
 		},
-		showStartPage = function() {
+		showStartPage = function(status) {
 			_startButton.prop('disabled', false);
 			_stopButton.prop('disabled', true);
 			_startPage.show();
 			_statusPage.hide();
+
+			if (status._detailsCount > 0) {
+				$("#product-details-count").text(status._detailsCount);
+				$("#data-info").show();
+				$("#no-data-inform").hide();
+			} else {
+				$("#data-info").hide();
+				$("#no-data-inform").show();
+			}
 		},
-		initPopup = function() {
+		initPopup = function(status) {
 			if (_status && _status._started) {
 				showStatusPage();
 			} else {
-				showStartPage();
+				showStartPage(status);
 			}
 		},
 		init = function() {
@@ -50,7 +59,7 @@ var Popup = (function() {
 				message: "status"
 			}, function(response) {
 				_status = response.status;
-				initPopup();
+				initPopup(_status);
 			});
 		};
 
@@ -75,7 +84,7 @@ var Popup = (function() {
 			message: "stop"
 		}, function(response) {
 			if (response.status) {
-				showStartPage();
+				showStartPage(response.status);
 			} else {
 				console.log(response);
 			}

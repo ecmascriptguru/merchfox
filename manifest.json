@@ -11,6 +11,7 @@
 	"background": {
 		"scripts": [
 			"assets/scripts/jquery.js",
+			"assets/scripts/common.js",
 			"assets/scripts/storage.js",
 			"assets/scripts/background.js"
 		]
@@ -34,6 +35,7 @@
 			],
 			"js": [
 				"assets/scripts/jquery.js",
+				"assets/scripts/common.js",
 				"assets/scripts/contentscript.js"
 			],
 			"run_at": "document_end",

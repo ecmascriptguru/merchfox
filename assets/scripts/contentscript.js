@@ -14,7 +14,7 @@ var ContentScript = (function() {
 			for (var i = 0; i < $searchItems.length; i++) {
 				urls.push($searchItems[i].href);
 			}
-			if ($nextPageLink) {
+			if ($nextPageLink.length > 0) {
 				nextUrl = $nextPageLink[0].href;
 			}
 

@@ -156,7 +156,7 @@ var WordFox = (function() {
 		addUrls: addUrls,
 		addData: addData,
 		urls: getUrls,
-		results: _results,
+		results: getResults,
 		get: getResults
 	};
 })();

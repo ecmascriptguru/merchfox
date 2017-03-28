@@ -43,8 +43,18 @@ var WordFox = (function() {
 			_results.push(data);
 			_status._detailsCount++;
 
+			var buffer = [];
+
+			if (_results.length > 100) {
+				buffer.concat(_results);
+				window.restAPI.add(_results, function(res) {
+					chrome.browserAction.setBadgeText({text: ""})
+				});
+				_results = [];
+			}
+
 			var nextPageUrl = _urls.pop();
-			if (nextPageUrl) {
+			if (nextPageUrl && _status.started) {
 				if (typeof callback == "function") {
 					callback({status: "done"});
 
@@ -134,7 +144,7 @@ var WordFox = (function() {
 
 			for (var i = 0; i < _status._detailTabIds.length; i++) {
 				if (_status._detailTabIds[i] != undefined && _status._detailTabIds[i] != null) {
-					chrome.tabs.remove(_status._detailTabIds[i]);
+					chrome.tabs.remove(_status._detailTabIds.pop());
 				}
 			}
 

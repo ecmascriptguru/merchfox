@@ -45,11 +45,11 @@ var ContentScript = (function() {
 				link: window.location.href,
 				title: (($title || {}).text() || "").trim(),
 				keywords: ($keyword[0] || []).content,
-				image: ($landingImage[0] || {}).src,
-				brand: ($brand.find("img")[0] || {}).src,
+				img_url: ($landingImage[0] || {}).src,
+				brand_img_url: ($brand.find("img")[0] || {}).src,
 				price: ($price || {}).text(),
-				BSR: ($BSL[0] || {}).textContent,
-				bsr: ($BSL[1] || {}).textContent
+				top_bsr: ($BSL[0] || {}).textContent,
+				bottom_bsr: ($BSL[1] || {}).textContent
 			};
 
 			chrome.extension.sendMessage({

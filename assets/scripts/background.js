@@ -114,7 +114,7 @@ var WordFox = (function() {
 		},
 
 		stop = function() {
-			_storage.saveProducts(_results);
+			// _storage.saveProducts(_results);
 			if (_status._initTabId) {
 				chrome.tabs.remove(_status._initTabId, function(param) {
 					console.log(param);
@@ -138,7 +138,9 @@ var WordFox = (function() {
 				}
 			}
 
-			chrome.browserAction.setBadgeText({text: ""})
+			window.restAPI.add(_results, function(res) {
+				chrome.browserAction.setBadgeText({text: ""})
+			});
 		},
 
 		getStatus = function() {
@@ -156,8 +158,7 @@ var WordFox = (function() {
 		addUrls: addUrls,
 		addData: addData,
 		urls: getUrls,
-		results: getResults,
-		get: getResults
+		results: getResults
 	};
 })();
 
@@ -182,7 +183,7 @@ var WordFox = (function() {
 
 			case "options":
 				if (request.message == "status") {
-					sendResponse({status: status, data: wordFox.results});
+					sendResponse({status: status, data: wordFox.results()});
 				}
 				break;
 

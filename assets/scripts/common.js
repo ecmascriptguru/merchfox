@@ -13,13 +13,15 @@ var restAPI = (function(window, jQuery) {
 
 	if (env == "dev") {
 		_baseURL = "http://localhost:8000/api/product";
+		// _baseURL = "http://localhost:8000/api/product?page=9";
 	}
 
-	var getProducts = function(params, callback) {
+	var getProducts = function(url, callback) {
+			var url = (url) ? url : _baseURL;
 			$.ajax({
-				url: _baseURL,
+				url: url,
 				method: "get",
-				data: params,
+				data: null,
 				dataType: 'json',
 				success: function(res) {
 					if (typeof callback === "function") {

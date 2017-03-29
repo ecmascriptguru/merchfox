@@ -54,7 +54,7 @@ var WordFox = (function() {
 			}
 
 			var nextPageUrl = _urls.pop();
-			if (nextPageUrl && _status.started) {
+			if (nextPageUrl && _status._started) {
 				if (typeof callback == "function") {
 					callback({status: "done"});
 

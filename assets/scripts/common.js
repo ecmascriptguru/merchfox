@@ -12,7 +12,7 @@ var restAPI = (function(window, jQuery) {
 	var _baseURL = null;
 
 	if (env == "dev") {
-		_baseURL = "http://localhost:8000/api/product";
+		_baseURL = "http://ec2-184-73-108-215.compute-1.amazonaws.com/api/product";
 		// _baseURL = "http://localhost:8000/api/product?page=9";
 	}
 

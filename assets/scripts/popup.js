@@ -5,6 +5,8 @@ var Popup = (function() {
 		_informTag = $("#no-data-inform"),
 		_startButton = $("#btn-start"),
 		_stopButton = $("#btn-stop"),
+		_loginButton = $("#login-button"),
+		_loginPage = $("#login-page"),
 		_startPage = $("#start-page"),
 		_statusPage = $("#status-page"),
 		_status = null,
@@ -28,12 +30,21 @@ var Popup = (function() {
 
 			_startButton.prop('disabled', true);
 			_stopButton.prop('disabled', false);
+			_loginPage.hide();
 			_startPage.hide();
 			_statusPage.show();
 		},
+
+		showLoginPage = function() {
+			_loginPage.show();
+			_startPage.hide();
+			_statusPage.hide();
+		},
+
 		showStartPage = function(status) {
 			_startButton.prop('disabled', false);
 			_stopButton.prop('disabled', true);
+			_loginPage.hide();
 			_startPage.show();
 			_statusPage.hide();
 
@@ -46,6 +57,7 @@ var Popup = (function() {
 				$("#no-data-inform").show();
 			}
 		},
+
 		initPopup = function(status) {
 			if (_status && _status._started) {
 				showStatusPage();
@@ -53,15 +65,42 @@ var Popup = (function() {
 				showStartPage(status);
 			}
 		},
+
 		init = function() {
 			chrome.extension.sendMessage({
 				from: "popup",
 				message: "status"
 			}, function(response) {
-				_status = response.status;
-				initPopup(_status);
+				var login = response.login;
+				if (!login) {
+					showLoginPage();
+				} else {
+					_status = response.status;
+					initPopup(_status);
+				}
 			});
 		};
+
+	_loginButton.click(function(event) {
+		event.preventDefault();
+		var email = $("#email").val(),
+			password = $("#password").val();
+		restAPI.login(email, password, function(res) {
+			if (res.status) {
+				chrome.extension.sendMessage({
+					from: "popup",
+					message: "login",
+					data: res.user
+				}, function(response) {
+					if (response.status) {
+						showStartPage();
+					}
+				})
+			} else {
+				alert("Please try again.");
+			}
+		})
+	});
 
 	_startButton.click(function(event) {
 		event.preventDefault();

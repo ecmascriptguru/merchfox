@@ -9,6 +9,18 @@
 <body>
 	<div class="container">
 		<h1>Word Fox Popup</h1>
+		<div id="login-page">
+			<h4>Please login to save your stuff.</h4>
+			<div class="form-group">
+				<input type="text" name="email" id="email" class="form-control" placeholder="Email Address">
+			</div>
+			<div class="form-group">
+				<input type="password" name="password" id="password" class="form-control" placeholder="Password">
+			</div>
+			<div class="form-group">
+				<button class="btn btn-success" id="login-button">Login</button>
+			</div>
+		</div>
 		<div id="start-page">
 			<h4 id="data-info">You have <span id="product-details-count">0</span>&nbsp;products data from Amazon.</h4>
 			<h4 id="no-data-inform">There are no data to be used. Do you want to collect data right now?</h4>
@@ -24,6 +36,7 @@
 	<script src="../scripts/jquery.js"></script>
 	<script src="../scripts/bootstrap.js"></script>
 	<script src="../scripts/storage.js"></script>
+	<script src="../scripts/common.js"></script>
 	<script src="../scripts/popup.js"></script>
 </body>
 </html>

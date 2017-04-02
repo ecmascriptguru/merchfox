@@ -187,13 +187,16 @@ var WordFox = (function() {
 					wordFox.stop();
 					sendResponse({status: status, message: "Scraping just stopped."});
 				} else if (request.message == "status") {
-					sendResponse({status: status});
+					sendResponse({status: status, login: JSON.parse(sessionStorage.login || "null")});
+				} else if (request.message == "login") {
+					sessionStorage.login = JSON.stringify(request.data);
+					sendResponse({status: true});
 				}
 				break;
 
 			case "options":
 				if (request.message == "status") {
-					sendResponse({status: status, data: wordFox.results()});
+					sendResponse({status: status, data: wordFox.results(), login: JSON.parse(sessionStorage.login || "null")});
 				}
 				break;
 

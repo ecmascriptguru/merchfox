@@ -18,7 +18,11 @@ var Options = (function() {
 					tmpRow.push(products[i].price || "");
 					tmpRow.push(products[i].top_bsr || "");
 					tmpRow.push(products[i].bottom_bsr || "");
-					tmpRow.push("<button class='btn btn-danger form-control remove'>-</button>");
+					if (products[i].saved_id == null) {
+						tmpRow.push("<button data-id='" + products[i].id + "' class='btn btn-success form-control action save'>Save</button>");
+					} else {
+						tmpRow.push("<button data-id='" + products[i].id + "' data-saved-id='" + products[i].saved_id + "' class='btn btn-danger form-control action unsave'>Unsave</button>");
+					}
 					_table.row.add(tmpRow).draw();
 				}
 

@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 
 var WordFox = (function() {
 	var _storage = window.DataStorage,
-		_amazonStartPoint = "https://www.amazon.com/s/ref=amb_link_483004722_1?ie=UTF8&field-keywords=&bbn=12035955011&field-enc-merchantbin=ATVPDKIKX0DER&hidden-keywords=ORCA&rh=i%3Afashion-novelty",
+		_amazonStartPoint = "https://www.amazon.com/s/ref=amb_link_483004722_1?ie=UTF8&bbn=12035955011&field-enc-merchantbin=ATVPDKIKX0DER&hidden-keywords=ORCA&rh=i%3Afashion-novelty&field-keywords=",
 		_urls = [],
 		_results = [],
 		_status = {
@@ -119,8 +119,12 @@ var WordFox = (function() {
 			_status._initTabUrl = tab.url;
 			chrome.browserAction.setBadgeText({ text: 'wait' });
 		},
-		start = function() {
-			chrome.tabs.create({url: _amazonStartPoint, active: false}, startedHandler);
+		start = function(keyword) {
+			if (keyword) {
+				chrome.tabs.create({url: _amazonStartPoint + keyword, active: false}, startedHandler);
+			} else {
+				chrome.tabs.create({url: _amazonStartPoint, active: false}, startedHandler);
+			}
 		},
 
 		stop = function() {
@@ -182,7 +186,7 @@ var WordFox = (function() {
 			case "popup":
 				if (request.message == "start") {
 					//	Code to start scraping
-					wordFox.start();
+					wordFox.start(request.keyword);
 					sendResponse({status: status, message: "Scraping just started."});
 				} else if (request.message == "stop") {
 					wordFox.stop();

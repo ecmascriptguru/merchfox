@@ -8,6 +8,8 @@ var createTab = function(params, callback) {
 	chrome.tabs.create(params, func);
 };
 
+var amazonSearchStartPoint = "https://www.amazon.com/s/ref=amb_link_483004722_1?ie=UTF8&bbn=12035955011&field-enc-merchantbin=ATVPDKIKX0DER&hidden-keywords=ORCA&rh=i%3Afashion-novelty&field-keywords=";
+
 var restAPI = (function(window, jQuery) {
 	var _baseURL = null,
 		_mainHost = null,

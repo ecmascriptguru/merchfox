@@ -10,6 +10,7 @@ var Popup = (function() {
 		_startPage = $("#start-page"),
 		_statusPage = $("#status-page"),
 		_status = null,
+		_keyword = $("#keyword"),
 
 		_getData = function() {
 			return [];
@@ -106,7 +107,8 @@ var Popup = (function() {
 		event.preventDefault();
 		chrome.extension.sendMessage({
 			from: "popup",
-			message: "start"
+			message: "start",
+			keyword: _keyword.val()
 		}, function(response) {
 			if (response.status) {
 				showStatusPage();

@@ -57,7 +57,7 @@ var ContentScript = (function() {
 				price: ($price || {}).text(),
 				top_bsr: ($BSL[0] || {}).textContent,
 				bottom_bsr: ($BSL[1] || {}).textContent,
-				bulletPoints: bulletPointsString.join("\n")
+				bullet_points: bulletPointsString.join("\n")
 			};
 
 			chrome.extension.sendMessage({

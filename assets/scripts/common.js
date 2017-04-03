@@ -11,8 +11,7 @@ var createTab = function(params, callback) {
 var amazonSearchStartPoint = "https://www.amazon.com/s/ref=amb_link_483004722_1?ie=UTF8&bbn=12035955011&field-enc-merchantbin=ATVPDKIKX0DER&hidden-keywords=ORCA&rh=i%3Afashion-novelty&field-keywords=";
 
 var restAPI = (function(window, jQuery) {
-	var _baseURL = null,
-		_mainHost = null,
+	var _mainHost = null,
 		_v1ApiBaseUrl = null;
 
 	if (env == "dev") {
@@ -20,16 +19,15 @@ var restAPI = (function(window, jQuery) {
 	} else {
 		_mainHost = "http://ec2-184-73-108-215.compute-1.amazonaws.com/";
 	}
-	_baseURL = _mainHost + "api/product";
 	_v1ApiBaseUrl = _mainHost + "api/v1/";
 
-	var getProducts = function(url, callback) {
-			var url = (url) ? url : _baseURL;
+	var getProducts = function(url, user_id, callback) {
+			var url = (url) ? url : _v1ApiBaseUrl + "products/get";
 			$.ajax({
 				url: url,
-				method: "get",
-				data: null,
-				dataType: 'json',
+				method: "POST",
+				data: JSON.stringify({user_id: user_id}),
+				contentType: 'application/json',
 				success: function(res) {
 					if (typeof callback === "function") {
 						callback(res);
@@ -49,7 +47,7 @@ var restAPI = (function(window, jQuery) {
 
 		insertProducts = function(params, user_id, callback) {
 			$.ajax({
-				url: _baseURL,
+				url: _v1ApiBaseUrl + "products/set",
 				method: "POST",
 				contentType: 'application/json',
 				data: JSON.stringify({user_id: user_id, data: params}),

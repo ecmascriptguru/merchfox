@@ -31,8 +31,19 @@ var Options = (function() {
 				if (data.next_page_url) {
 					window.setTimeout(
 						function() {
-							_mask.show();
-							restAPI.get(data.next_page_url, appendTable);
+							chrome.extension.sendMessage({
+								from: "options",
+								message: "status"
+							}, function(res) {
+								var user = res.login;
+								if (!user) {
+									chrome.tabs.create({url: chrome.extension.getURL("assets/html/login.html")});
+									return false;
+								}
+
+								_mask.show();
+								restAPI.get(data.next_page_url, user.id, appendTable);
+							});
 						},
 						500);
 				}
@@ -42,9 +53,19 @@ var Options = (function() {
 		},
 
 		update = function() {
-			_table.clear();
-			_mask.show();
-			restAPI.get(null, appendTable);
+			chrome.extension.sendMessage({
+				from: "options",
+				message: "status"
+			}, function(response) {
+				var user = response.login;
+				if (!user) {
+					chrome.tabs.create({url: chrome.extension.getURL("assets/html/login.html")});
+					return false;
+				}
+				_table.clear();
+				_mask.show();
+				restAPI.get(null, user.id, appendTable);
+			});
 		},
 
 		// submit = function(callback) {

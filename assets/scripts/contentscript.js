@@ -39,7 +39,13 @@ var ContentScript = (function() {
 				$landingImage = $("#landingImage"),
 				$brand = $("a#brand"),
 				$price = $("span#priceblock_ourprice"),
-				$BSL = $("li#SalesRank ul.zg_hrsr span.zg_hrsr_rank");
+				$bulletPoints = $("#feature-bullets ul li span"),
+				$BSL = $("li#SalesRank ul.zg_hrsr span.zg_hrsr_rank"),
+				bulletPointsString = [];
+
+			$bulletPoints.toArray().forEach(function(el) {
+				bulletPointsString.push(el.textContent.trim());
+			});
 
 			var data = {
 				link: window.location.href,
@@ -47,9 +53,11 @@ var ContentScript = (function() {
 				keywords: ($keyword[0] || []).content,
 				img_url: ($landingImage[0] || {}).src,
 				brand_img_url: ($brand.find("img")[0] || {}).src,
+				brand_url: $brand[0].href,
 				price: ($price || {}).text(),
 				top_bsr: ($BSL[0] || {}).textContent,
-				bottom_bsr: ($BSL[1] || {}).textContent
+				bottom_bsr: ($BSL[1] || {}).textContent,
+				bulletPoints: bulletPointsString.join("\n")
 			};
 
 			chrome.extension.sendMessage({
@@ -59,7 +67,6 @@ var ContentScript = (function() {
 			}, function(response) {
 				console.log(response);
 			});
-			console.log("This is product page.");
 		},
 
 		_process = {

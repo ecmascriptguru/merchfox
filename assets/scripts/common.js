@@ -112,12 +112,12 @@ var restAPI = (function(window, jQuery) {
 			});
 		},
 
-		unsaveProduct = function(remote_id, callback) {
+		unsaveProduct = function(params, callback) {
 			$.ajax({
 				url: _v1ApiBaseUrl + "items/unsave",
 				method: "post",
 				contentType: "application/json",
-				data: JSON.stringify({id: remote_id}),
+				data: JSON.stringify(params),
 				success: function(res) {
 					if (typeof callback == "function") {
 						callback(res);
@@ -136,6 +136,7 @@ var restAPI = (function(window, jQuery) {
 		};
 
 	return {
+		base: _mainHost,
 		login: login,
 		save: saveProduct,
 		unsave: unsaveProduct,

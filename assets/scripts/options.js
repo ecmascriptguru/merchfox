@@ -71,6 +71,57 @@ var Options = (function() {
 
 		init = function() {
 			_table = $('#products-table').DataTable();
+			$("#products-table tbody").on("click", "tr button.action", function(event) {
+				event.preventDefault();
+				var $curRow = $(this).parents("tr"),
+					$curBtn = $(this),
+					data = {};
+
+				chrome.extension.sendMessage({
+					from: "options",
+					message: "status"
+				}, function(res) {
+					var user = res.login;
+					if (!user) {
+						chrome.tabs.create({url: chrome.extension.getURL("assets/html/login.html")});
+						return false;
+					}
+
+					if ($curBtn.hasClass("save")) {
+						data.product_id = parseInt($curBtn.attr("data-id"));
+						data.user_id = parseInt(user.id);
+						restAPI.save(data, function(response) {
+							if (response.status) {
+								$curBtn.attr('data-saved-id', response.saved_id)
+									.removeClass("save")
+									.removeClass("btn-success")
+									.addClass("unsave")
+									.addClass("btn-danger")
+									.text("Unsave");
+							} else {
+								console.log("Something went wrong.");
+								console.log(response);
+							}
+						});
+					} else if ($curBtn.hasClass("unsave")) {
+						data.product_id = $curBtn.attr('data-id');
+						data.saved_id = $curBtn.attr('data-saved-id');
+						restAPI.unsave(data, function(response) {
+							if (response.status) {
+								$curBtn.removeAttr("data-saved-id")
+									.removeClass("unsave")
+									.removeClass("btn-danger")
+									.addClass("save")
+									.removeClass("btn-success")
+									.text("Save");
+							} else {
+								console.log("Something went wrong.");
+								console.log(response);
+							}
+						})
+					}
+				});
+			})
 			_reloadButton.click(update);
 			update();
 		};

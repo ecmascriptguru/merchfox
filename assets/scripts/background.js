@@ -178,6 +178,7 @@ var WordFox = (function() {
 	chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		var status = wordFox.status();
 		switch (request.from) {
+			case "login-page":
 			case "popup":
 				if (request.message == "start") {
 					//	Code to start scraping
@@ -191,6 +192,11 @@ var WordFox = (function() {
 				} else if (request.message == "login") {
 					sessionStorage.login = JSON.stringify(request.data);
 					sendResponse({status: true});
+					if (request.from == "login-page") {
+						chrome.tabs.remove(sender.tab.id, function(tab) {
+							console.log("Login page removed.");
+						})
+					}
 				}
 				break;
 

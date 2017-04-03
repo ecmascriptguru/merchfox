@@ -47,12 +47,12 @@ var restAPI = (function(window, jQuery) {
 			});
 		},
 
-		insertProducts = function(params, callback) {
+		insertProducts = function(params, user_id, callback) {
 			$.ajax({
 				url: _baseURL,
 				method: "POST",
 				contentType: 'application/json',
-				data: JSON.stringify(params),
+				data: JSON.stringify({user_id: user_id, data: params}),
 				// data: params,
 				success: function(res) {
 					if (typeof callback === "function") {

@@ -43,11 +43,17 @@ var WordFox = (function() {
 			_results.push(data);
 			_status._detailsCount++;
 
+			var userData = JSON.parse(sessionStorage.login);
+			if (!userData) {
+				chrome.tabs.create({url: chrome.extension.getURL("assets/html/login.html")});
+				return false;
+			}
+
 			var buffer = [];
 
 			if (_results.length > 100) {
 				buffer.concat(_results);
-				window.restAPI.add(_results, function(res) {
+				window.restAPI.add(_results, userData.id, function(res) {
 					chrome.browserAction.setBadgeText({text: ""})
 				});
 				_results = [];
@@ -75,7 +81,6 @@ var WordFox = (function() {
 					chrome.tabs.remove(sender.tab.id, function() {
 						if (_status._detailTabIds.length == 0) {
 							_status._detailTabUrls = {};
-							stop();
 						}
 					});
 				}
@@ -152,7 +157,7 @@ var WordFox = (function() {
 				}
 			}
 
-			window.restAPI.add(_results, function(res) {
+			window.restAPI.add(_results, JSON.parse(sessionStorage.login).id, function(res) {
 				chrome.browserAction.setBadgeText({text: ""})
 			});
 		},

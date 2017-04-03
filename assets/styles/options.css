@@ -9,6 +9,10 @@ table img.landing-img {
 table#products-table td {
 	vertical-align: middle;
 }
+
+table#products-table td:last-child {
+	text-align: center;
+}
 table button.remove {
 	width: 100%;
 }

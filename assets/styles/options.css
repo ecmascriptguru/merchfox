@@ -2,6 +2,15 @@ body {
   /*padding: 20px;*/
 }
 
+div.container-fluid {
+	background-image: url(../images/logo.png);
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	height: 124px;
+}
+div.container-fluid center {
+	margin-top: 60px;
+}
 table img.landing-img {
 	width: 120px;
 }

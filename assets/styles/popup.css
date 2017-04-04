@@ -3,6 +3,18 @@ body {
 	height: auto;
 }
 
+div.logo-container {
+	background-image: url(../images/logo.png);
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	height: 50px;
+	margin-top: 5px;
+    margin-left: -5px;
+}
+#popup-title {
+	margin-top: 0px;
+	text-align: center;
+}
 span.status {
 	padding: 1px;
 	float: right;

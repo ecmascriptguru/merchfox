@@ -5,6 +5,7 @@
 	"description": "__MSG_appDescription__",
 	"icons": {
 		"16": "assets/images/icon-16.png",
+		"38": "assets/images/icon-38.png",
 		"128": "assets/images/icon-128.png"
 	},
 	"default_locale": "en",

@@ -14,7 +14,13 @@ var Options = (function() {
 					var tmpRow = [];
 					tmpRow.push("<a href='" + products[i].link + "' + target='_newTab'><img src='" + products[i].img_url + "' class='landing-img' /></a>");
 					tmpRow.push(products[i].title || "");
-					tmpRow.push(products[i].keywords || "");
+					var bulletPoints = products[i].bullet_points.split("\n"),
+						tags = "<ul>";
+
+					bulletPoints.forEach(function(point) {
+						tags += "<li>" + point + "</li>";
+					});
+					tmpRow.push(tags + "</ul>");
 					tmpRow.push(products[i].price || "");
 					tmpRow.push(products[i].top_bsr || "");
 					tmpRow.push(products[i].bottom_bsr || "");

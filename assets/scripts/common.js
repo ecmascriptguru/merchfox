@@ -1,7 +1,7 @@
 'use strict';
 
-var env = "dev";
-// var env = "product";
+// var env = "dev";
+var env = "product";
 
 var createTab = function(params, callback) {
 	var func = (typeof callback === "function") ? callback : function() {};
@@ -17,7 +17,7 @@ var restAPI = (function(window, jQuery) {
 	if (env == "dev") {
 		_mainHost = "http://localhost:8000/";
 	} else {
-		_mainHost = "http://ec2-184-73-108-215.compute-1.amazonaws.com/";
+		_mainHost = "http://184.73.108.215/";
 	}
 	_v1ApiBaseUrl = _mainHost + "api/v1/";
 

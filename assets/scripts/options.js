@@ -22,8 +22,8 @@ var Options = (function() {
 					});
 					tmpRow.push(tags + "</ul>");
 					tmpRow.push(products[i].price || "");
-					tmpRow.push(products[i].top_bsr || "");
-					tmpRow.push(products[i].bottom_bsr || "");
+					tmpRow.push(parseInt((products[i].top_bsr || "#0").substr(1)));
+					tmpRow.push(parseInt((products[i].bottom_bsr || "#0").substr(1)));
 					if (products[i].saved_id == null) {
 						tmpRow.push("<button data-id='" + products[i].id + "' class='btn btn-success form-control action save'>Save</button>");
 					} else {

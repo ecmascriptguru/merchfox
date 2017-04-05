@@ -40,14 +40,19 @@ var WordFox = (function() {
 		},
 
 		addData = function(data, sender, callback) {
-			_results.push(data);
-			_status._detailsCount++;
 
 			var userData = JSON.parse(sessionStorage.login);
 			if (!userData) {
 				chrome.tabs.remove(sender.tab.id);
 				chrome.tabs.create({url: chrome.extension.getURL("assets/html/login.html")});
 				return false;
+			}
+
+			if (data.top_bsr && data.bottom_bsr) {
+				_results.push(data);
+				_status._detailsCount++;
+			} else {
+				console.log("Blank BSR found");
 			}
 
 			var buffer = [];

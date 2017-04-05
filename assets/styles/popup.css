@@ -20,3 +20,8 @@ span.status {
 	float: right;
 	border-radius: 9px;
 }
+
+button.btn-signout {
+	float: right;
+	margin-top: 15px;
+}

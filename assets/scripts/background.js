@@ -132,7 +132,7 @@ var WordFox = (function() {
 			}
 		},
 
-		stop = function() {
+		stop = function(callback) {
 			// _storage.saveProducts(_results);
 			if (_status._initTabId) {
 				chrome.tabs.remove(_status._initTabId, function(param) {
@@ -158,7 +158,10 @@ var WordFox = (function() {
 			}
 
 			window.restAPI.add(_results, JSON.parse(sessionStorage.login).id, function(res) {
-				chrome.browserAction.setBadgeText({text: ""})
+				chrome.browserAction.setBadgeText({text: ""});
+				if (typeof callback == "function") {
+					callback();
+				}
 			});
 		},
 
@@ -206,6 +209,11 @@ var WordFox = (function() {
 							console.log("Login page removed.");
 						})
 					}
+				} else if (request.message == "logout") {
+					wordFox.stop(function() {
+						sessionStorage.login = JSON.stringify(null);
+					});
+					sendResponse({staus: wordFox.status()});
 				}
 				break;
 

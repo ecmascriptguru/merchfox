@@ -6,6 +6,7 @@ var Popup = (function() {
 		_startButton = $("#btn-start"),
 		_stopButton = $("#btn-stop"),
 		_loginButton = $("#login-button"),
+		_logoutButton = $("button#btn-signout"),
 		_loginPage = $("#login-page"),
 		_startPage = $("#start-page"),
 		_statusPage = $("#status-page"),
@@ -15,6 +16,16 @@ var Popup = (function() {
 		_getData = function() {
 			return [];
 		},
+
+		signOut = function() {
+			chrome.extension.sendMessage({
+				from: "popup",
+				message: "logout"
+			}, function(response) {
+				showLoginPage();
+			});
+		},
+
 		showStatusPage = function() {
 			$("#urls-count").text(_status._urlsCount);
 			if (!_status._initTabId) {
@@ -31,6 +42,7 @@ var Popup = (function() {
 
 			_startButton.prop('disabled', true);
 			_stopButton.prop('disabled', false);
+			_logoutButton.show();
 			_loginPage.hide();
 			_startPage.hide();
 			_statusPage.show();
@@ -38,6 +50,7 @@ var Popup = (function() {
 
 		showLoginPage = function() {
 			_loginPage.show();
+			_logoutButton.hide();
 			_startPage.hide();
 			_statusPage.hide();
 		},
@@ -45,11 +58,12 @@ var Popup = (function() {
 		showStartPage = function(status) {
 			_startButton.prop('disabled', false);
 			_stopButton.prop('disabled', true);
+			_logoutButton.show();
 			_loginPage.hide();
 			_startPage.show();
 			_statusPage.hide();
 
-			if (status._detailsCount > 0) {
+			if (status._detailsCount && status._detailsCount > 0) {
 				$("#product-details-count").text(status._detailsCount);
 				$("#data-info").show();
 				$("#no-data-inform").hide();
@@ -94,7 +108,7 @@ var Popup = (function() {
 					data: res.user
 				}, function(response) {
 					if (response.status) {
-						showStartPage();
+						showStartPage(response.status);
 					}
 				})
 			} else {
@@ -102,6 +116,8 @@ var Popup = (function() {
 			}
 		})
 	});
+
+	_logoutButton.click(signOut);
 
 	_startButton.click(function(event) {
 		event.preventDefault();

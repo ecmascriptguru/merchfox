@@ -1,7 +1,7 @@
 'use strict';
 
-// var env = "dev";
-var env = "product";
+var env = "dev";
+// var env = "product";
 
 var createTab = function(params, callback) {
 	var func = (typeof callback === "function") ? callback : function() {};

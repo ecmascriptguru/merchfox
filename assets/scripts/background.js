@@ -45,6 +45,7 @@ var WordFox = (function() {
 
 			var userData = JSON.parse(sessionStorage.login);
 			if (!userData) {
+				chrome.tabs.remove(sender.tab.id);
 				chrome.tabs.create({url: chrome.extension.getURL("assets/html/login.html")});
 				return false;
 			}
@@ -153,7 +154,11 @@ var WordFox = (function() {
 
 			for (var i = 0; i < _status._detailTabIds.length; i++) {
 				if (_status._detailTabIds[i] != undefined && _status._detailTabIds[i] != null) {
-					chrome.tabs.remove(_status._detailTabIds.pop());
+					try {
+						chrome.tabs.remove(_status._detailTabIds.pop());
+					} catch(e) {
+						console.log("Unknow Tab ID detected.");
+					}
 				}
 			}
 

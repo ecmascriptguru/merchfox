@@ -64,6 +64,7 @@ var Options = (function() {
 					chrome.tabs.create({url: chrome.extension.getURL("assets/html/login.html")});
 					return false;
 				}
+				$("#download").attr('href', restAPI.apiBaseUrl + "items/download/" + user.id);
 				_table.clear();
 				_mask.show();
 				restAPI.getItems(null, user.id, appendTable);
@@ -102,7 +103,7 @@ var Options = (function() {
                         }
                     });
 				});
-			})
+			});
 			_reloadButton.click(update);
 			update();
 		};

@@ -184,6 +184,7 @@ var restAPI = (function(window, jQuery) {
 
 	return {
 		base: _mainHost,
+		apiBaseUrl: _v1ApiBaseUrl,
 		login: login,
 		save: saveProduct,
 		unsave: unsaveProduct,

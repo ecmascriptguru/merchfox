@@ -22,10 +22,10 @@ var WordFox = (function() {
 		},
 
 		addUrls = function(params) {
+			_urls = _urls.concat(params.urls);
 			if (!_status._detailPageStarted) {
 				startProductPages();
 			}
-			_urls = _urls.concat(params.urls);
 			if (params.next_page_url) {
 				_status._initTabUrl = params.next_page_url;
 				_status._urlsCount++;
@@ -89,6 +89,7 @@ var WordFox = (function() {
 					chrome.tabs.remove(sender.tab.id, function() {
 						if (_status._detailTabIds.length == 0) {
 							_status._detailTabUrls = {};
+							stop();
 						}
 					});
 				}
@@ -180,6 +181,7 @@ var WordFox = (function() {
 					callback();
 				}
 			});
+			_results = [];
 		},
 
 		getStatus = function() {

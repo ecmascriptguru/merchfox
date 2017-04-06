@@ -45,6 +45,53 @@ var restAPI = (function(window, jQuery) {
 			});
 		},
 
+		getSavedProducts = function(url, user_id, callback) {
+			var url = (url) ? url : _v1ApiBaseUrl + "items/get";
+			$.ajax({
+				url: url,
+				method: "POST",
+				data: JSON.stringify({user_id: user_id}),
+				contentType: 'application/json',
+				success: function(res) {
+					if (typeof callback === "function") {
+						callback(res);
+					} else {
+						console.log(res);
+					}
+				},
+				failure: function(e, xhr) {
+					if (typeof callback === "function") {
+						callback(e);
+					} else {
+						console.log(e);
+					}
+				}
+			});
+		},
+
+		deleteSavedProduct = function(params, callback) {
+			$.ajax({
+				url: _v1ApiBaseUrl + "items/del",
+				method: "post",
+				contentType: "application/json",
+				data: JSON.stringify(params),
+				success: function(res) {
+					if (typeof callback == "function") {
+						callback(res);
+					} else {
+						console.log(res);
+					}
+				},
+				failure: function(e, xhr) {
+					if (typeof callback == "function") {
+						callback(e);
+					} else {
+						console.log(e);
+					}
+				}
+			});
+		},
+
 		insertProducts = function(params, user_id, startFlag = false, callback) {
 			$.ajax({
 				url: _v1ApiBaseUrl + "products/set",
@@ -141,7 +188,9 @@ var restAPI = (function(window, jQuery) {
 		save: saveProduct,
 		unsave: unsaveProduct,
 		get: getProducts,
-		add: insertProducts
+		add: insertProducts,
+		getItems: getSavedProducts,
+		deleteItem: deleteSavedProduct
 	};
 	
 })(window, $)

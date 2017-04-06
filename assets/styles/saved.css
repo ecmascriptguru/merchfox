@@ -1,0 +1,42 @@
+body {
+  /*padding: 20px;*/
+}
+
+div.container-fluid {
+	background-image: url(../images/logo.png);
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	height: 124px;
+}
+div.container-fluid center {
+	margin-top: 60px;
+}
+table img.landing-img {
+	width: 120px;
+}
+
+table#products-table td {
+	vertical-align: middle;
+}
+
+table#products-table td:last-child {
+	text-align: center;
+}
+table button.remove {
+	width: 100%;
+}
+
+div#mask {
+	top: 0;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	background: rgba(255,255,255,0.7);
+	display: none;
+}
+div#mask h2 {
+	vertical-align: middle;
+	padding-top: 220px;
+	font-weight: bold;
+}

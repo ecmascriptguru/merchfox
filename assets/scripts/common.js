@@ -1,7 +1,7 @@
 'use strict';
 
-// var env = "dev";
-var env = "product";
+var env = "dev";
+// var env = "product";
 
 var createTab = function(params, callback) {
 	var func = (typeof callback === "function") ? callback : function() {};
@@ -45,12 +45,12 @@ var restAPI = (function(window, jQuery) {
 			});
 		},
 
-		insertProducts = function(params, user_id, callback) {
+		insertProducts = function(params, user_id, startFlag = false, callback) {
 			$.ajax({
 				url: _v1ApiBaseUrl + "products/set",
 				method: "POST",
 				contentType: 'application/json',
-				data: JSON.stringify({user_id: user_id, data: params}),
+				data: JSON.stringify({user_id: user_id, data: params, start_flag: startFlag}),
 				// data: params,
 				success: function(res) {
 					if (typeof callback === "function") {

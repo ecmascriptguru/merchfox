@@ -4,8 +4,6 @@ chrome.runtime.onInstalled.addListener(function (details) {
   console.log('previousVersion', details.previousVersion);
 });
 
-// chrome.browserAction.setBadgeText({ text: '\'Allo' });
-
 var WordFox = (function() {
 	var _storage = window.DataStorage,
 		_amazonStartPoint = "https://www.amazon.com/s/ref=amb_link_483004722_1?ie=UTF8&bbn=12035955011&field-enc-merchantbin=ATVPDKIKX0DER&hidden-keywords=ORCA&rh=i%3Afashion-novelty&field-keywords=",
@@ -13,6 +11,7 @@ var WordFox = (function() {
 		_results = [],
 		_status = {
 			_started: false,
+			_startFlag: false,
 			_detailPageStarted: false,
 			_initTabId: null,
 			_initTabUrl: null,
@@ -23,13 +22,13 @@ var WordFox = (function() {
 		},
 
 		addUrls = function(params) {
+			if (!_status._detailPageStarted) {
+				startProductPages();
+			}
 			_urls = _urls.concat(params.urls);
 			if (params.next_page_url) {
 				_status._initTabUrl = params.next_page_url;
 				_status._urlsCount++;
-				if (!_status._detailPageStarted) {
-					startProductPages();
-				}
 			} else {
 				chrome.tabs.remove(_status._initTabId, function(res) {
 					console.log(res);
@@ -59,8 +58,11 @@ var WordFox = (function() {
 
 			if (_results.length > 100) {
 				buffer.concat(_results);
-				window.restAPI.add(_results, userData.id, function(res) {
-					chrome.browserAction.setBadgeText({text: ""})
+				window.restAPI.add(_results, userData.id, !(_status._startFlag), function(res) {
+					if (!_status._startFlag) {
+						_status._startFlag = true;
+					}
+					chrome.browserAction.setBadgeText({text: ""});
 				});
 				_results = [];
 			}
@@ -131,6 +133,10 @@ var WordFox = (function() {
 			chrome.browserAction.setBadgeText({ text: 'wait' });
 		},
 		start = function(keyword) {
+			_status._startFlag = false;
+			_status._urlsCount = 0;
+			_status._detailsCount = 0;
+			_status._results = [];
 			if (keyword) {
 				chrome.tabs.create({url: _amazonStartPoint + keyword, active: false}, startedHandler);
 			} else {
@@ -167,7 +173,8 @@ var WordFox = (function() {
 				}
 			}
 
-			window.restAPI.add(_results, JSON.parse(sessionStorage.login).id, function(res) {
+			window.restAPI.add(_results, JSON.parse(sessionStorage.login).id, !(_status._startFlag), function(res) {
+				_status._startFlag = true;
 				chrome.browserAction.setBadgeText({text: ""});
 				if (typeof callback == "function") {
 					callback();

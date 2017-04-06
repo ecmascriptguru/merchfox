@@ -100,6 +100,7 @@ var ContentScript = (function() {
 	return {
 		init: init,
 		get: getSomething,
+		scrapSearchPage: scrapSearchPage,
 		scrapProductPage: scrapProductPage
 	};
 })();
@@ -109,4 +110,5 @@ var ContentScript = (function() {
 	window.ContentScript = ContentScript;
 	window.ContentScript.init();
 	// window.ContentScript.scrapProductPage();
+	// window.ContentScript.scrapSearchPage();
 })(window, $);

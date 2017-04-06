@@ -96,12 +96,6 @@ var Options = (function() {
                     restAPI.deleteItem(data, function(response) {
                         if (response.status) {
                             _table.row($curRow).remove().draw();
-                            // $curBtn.removeAttr("data-saved-id")
-                            //     .removeClass("unsave")
-                            //     .removeClass("btn-danger")
-                            //     .addClass("save")
-                            //     .removeClass("btn-success")
-                            //     .text("Save");
                         } else {
                             console.log("Something went wrong.");
                             console.log(response);

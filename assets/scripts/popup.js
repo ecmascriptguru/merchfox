@@ -8,6 +8,7 @@ var Popup = (function() {
 		_loginButton = $("#login-button"),
 		_logoutButton = $("button#btn-signout"),
 		_registerButton = $("#register-button"),
+		_forgotLink = $("#forgot-password-link"),
 		_loginPage = $("#login-page"),
 		_startPage = $("#start-page"),
 		_statusPage = $("#status-page"),
@@ -150,6 +151,7 @@ var Popup = (function() {
 	});
 
 	_registerButton[0].href = restAPI.base + "register";
+	_forgotLink[0].href = restAPI.base + "password/reset";
 
 	return {
 		init: init,

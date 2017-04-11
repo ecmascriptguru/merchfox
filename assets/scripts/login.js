@@ -26,5 +26,6 @@
 				})
 			})
 		}
-	})
+	});
+	$("#forgot-password-link")[0].href = restAPI.base + "password/reset";
 })(window, $);

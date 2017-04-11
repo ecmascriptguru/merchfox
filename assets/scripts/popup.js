@@ -7,6 +7,7 @@ var Popup = (function() {
 		_stopButton = $("#btn-stop"),
 		_loginButton = $("#login-button"),
 		_logoutButton = $("button#btn-signout"),
+		_registerButton = $("#register-button"),
 		_loginPage = $("#login-page"),
 		_startPage = $("#start-page"),
 		_statusPage = $("#status-page"),
@@ -147,6 +148,8 @@ var Popup = (function() {
 			}
 		});
 	});
+
+	_registerButton[0].href = restAPI.base + "register";
 
 	return {
 		init: init,
